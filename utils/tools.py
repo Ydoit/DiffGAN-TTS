@@ -261,12 +261,13 @@ def synth_samples(args, targets, predictions, vocoder, model_config, preprocess_
 
     multi_speaker = model_config["multi_speaker"]
     teacher_forced_tag = "_teacher_forced" if args.teacher_forced else ""
-    basenames = targets[0]
+    # basenames = targets[0]
+    basenames = 'result'
     if args.model == "aux":
         # denormalizing x_0 is needed due to diffuse_trace
         predictions[0] = diffusion.denorm_spec(predictions[0][0])
     for i in range(len(predictions[0])):
-        basename = basenames[i]
+        basename = 'result'
         src_len = predictions[10][i].item()
         mel_len = predictions[11][i].item()
         mel_prediction = predictions[0][i, :mel_len].detach().transpose(0, 1)
@@ -294,6 +295,7 @@ def synth_samples(args, targets, predictions, vocoder, model_config, preprocess_
 
     sampling_rate = preprocess_config["preprocessing"]["audio"]["sampling_rate"]
     for wav, basename in zip(wav_predictions, basenames):
+        basename='resualt'
         wavfile.write(os.path.join(
             path, str(args.restore_step), "{}_{}{}.wav".format(basename, args.speaker_id, teacher_forced_tag)\
                 if multi_speaker and args.mode == "single" else "{}{}.wav".format(basename, teacher_forced_tag)),
